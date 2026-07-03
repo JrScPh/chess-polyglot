@@ -153,7 +153,7 @@ async function makeMove(move) {
     updateCaptures();
     updateStatusMessage();
 
-    if (data.status === 'ongoing') {
+    if (data.status === 'ongoing' && playerSide !== 'local') {
         botThinking = true;
         await makeBotMove();
     }
@@ -235,6 +235,11 @@ document.getElementById('random').addEventListener('click', () => {
 document.getElementById('black').addEventListener('click', () => {
     playerSide = 'black';
     selectOption('black', sideButtons);
+});
+document.getElementById('local').addEventListener('click', async () => {
+    gameSetup.style.display = 'none';
+    playerSide = "local";
+    await startGame();
 });
 
 // Confirm button

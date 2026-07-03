@@ -50,7 +50,7 @@ chess-engine/
 ## Setup
 
 ```bash
-git clone https://github.com/<your-username>/chess-engine.git
+git clone https://github.com/JrScPh/chess-engine.git
 cd chess-engine
 pip install django pytest
 python manage.py migrate

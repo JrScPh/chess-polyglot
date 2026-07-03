@@ -1,6 +1,6 @@
 # Chess Engine (Python)
 
-A chess engine built from scratch in Python, with a Django backend and a vanilla JS/HTML/CSS frontend. Move generation, rules enforcement, and game state are handled entirely server-side; the frontend is a thin rendering layer with no game logic of its own.
+A chess engine built from scratch in Python, with a Django backend and a vanilla JS/HTML/CSS frontend. Move generation, rules enforcement, and game state are handled entirely server-side; the frontend is a thin rendering layer with no game logic of its own. Visit https://jrscph-chess-engine.onrender.com/ to play now in your browser.
 
 ## Features
 
@@ -15,7 +15,7 @@ A chess engine built from scratch in Python, with a Django backend and a vanilla
 
 ## Bot
 
-The bot selects moves using minimax search with alpha-beta pruning, searched to depth 3.
+The bot selects moves using minimax search with alpha-beta pruning.
 
 - **Evaluation:** material count only (standard piece values, signed by color)
 - **Move ordering:** MVV-LVA (Most Valuable Victim, Least Valuable Attacker) — captures are searched before quiet moves, ordered by the value of the piece being captured relative to the capturing piece, so that pruning cuts off more of the tree

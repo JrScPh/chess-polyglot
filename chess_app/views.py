@@ -4,10 +4,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from engine.game import Game
 from engine.move import Move
 from engine.constants import EMPTY
-from engine.bot import choose_bot_move
+from engine.bot import choose_bot_move, choose_random_move
 import json
-import random
 from engine.constants import EMPTY, GameStatus
+import signal
 
 def move_from_dict(move):
     return Move(move['from_sq'], move['to_sq'], move['flag'], move['captured'])
@@ -79,5 +79,14 @@ def make_bot_move(request):
     if game.current_status != GameStatus.ONGOING:
         return JsonResponse({'error': 'Game has ended'}, status=400)
 
-    move = choose_bot_move(game)
+    signal.signal(signal.SIGALRM, timeout_handler)
+    try:
+        signal.alarm(15)
+        move = choose_bot_move(game)
+        signal.alarm(0)
+    except TimeoutError:
+        move = choose_random_move(game)
     return _finalize_and_respond(request, game, move_history, move)
+
+def timeout_handler(signum, frame):
+    raise TimeoutError()

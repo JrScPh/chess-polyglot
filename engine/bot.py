@@ -13,7 +13,7 @@ def choose_bot_move(game):
 
     for move in game.legal_moves:
         undo = game.board.make_move(move)
-        move_score = minimax(game.board, game.move_gen, 3, alpha, beta)
+        move_score = minimax(game.board, game.move_gen, 2, alpha, beta)
         game.board.unmake_move(move, undo)
 
         if best_score is None:
@@ -33,6 +33,24 @@ def choose_bot_move(game):
             move_list.append(move)
 
     return random.choice(move_list)
+
+def choose_random_move(game):
+    # 1. Take mate-in-1 if available
+    for move in game.legal_moves:
+        game.push(move)
+        is_mate = game.current_status == GameStatus.CHECKMATE
+        game.pop()
+        if is_mate:
+            return move
+
+    captures = [move for move in game.legal_moves if move.captured != EMPTY]
+    random.shuffle(captures)
+    for move in captures:
+        piece_value = PIECE_VALUES[abs(move.captured)]
+        if random.random() < piece_value / 10:
+            return move
+
+    return random.choice(game.legal_moves)
 
 def evaluate(board):
     score = 0
@@ -74,7 +92,7 @@ def minimax(board, gen, depth, alpha, beta):
 
     return score
 
-def quiescence(board, gen, alpha, beta, depth=3):
+def quiescence(board, gen, alpha, beta, depth=2):
     stand_pat = evaluate(board)
 
     if board.side == WHITE:
